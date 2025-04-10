@@ -7,6 +7,7 @@ import SortOptions from "../components/SortOptions";
 import PetCard from "../components/PetCard";
 import PetOfDay from "../components/PetOfDay";
 import { usePetsData } from "../hooks/usePetsData";
+import Layout from "../components/layout";
 
 const PAGE_SIZE = 8;
 
@@ -88,9 +89,10 @@ export default function HomePage() {
   const allPets = usePetsData();
 
   return (
+    <Layout>
     <div className="m-4 space-y-8">
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <h1 className="text-3xl font-bold">Explore Pets</h1>
+        <h1 className="text-2xl font-bold">Explore ours Pets</h1>
       </div>
 
       {error && (
@@ -141,5 +143,6 @@ export default function HomePage() {
         </>
       )}
     </div>
+    </Layout>
   );
 }
