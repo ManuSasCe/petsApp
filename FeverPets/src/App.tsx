@@ -1,22 +1,17 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
-import Layout from "./components/layout";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import PetDetailPage from "./pages/PetDetailPage";
+import NotFound from "./pages/NotFound";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-    ],
-  },
-]);
+const App = () => (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pet/:id" element={<PetDetailPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
 
-function App() {
-  return <RouterProvider router={router} />;
-}
+);
 
 export default App;
