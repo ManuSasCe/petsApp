@@ -15,45 +15,37 @@ export interface PetsResponse {
 }
 
 export async function fetchPets(params?: FetchPetsParams): Promise<PetsResponse> {
-  
   const queryParams = new URLSearchParams();
-  
+  const limit = params?.limit || 10;
+
   if (params?.page) {
     queryParams.append('_page', params.page.toString());
   }
-  
-  if (params?.limit) {
-    queryParams.append('_limit', params.limit.toString());
-  } else {
-    queryParams.append('_limit', '8');
-  }
-  
+
+  queryParams.append('_limit', limit.toString());
+
   if (params?.sort) {
-    queryParams.append('_sort', `${params.sort}`);
+    queryParams.append('_sort', params.sort);
   }
 
   if (params?.direction) {
     queryParams.append('_order', params.direction);
   }
 
-  if (params?.direction) {
-    queryParams.append('direction', `${params.direction}`);
-  }
-  
-  const url = `${API_BASE_URL}/pets${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-  
+  const url = `${API_BASE_URL}/pets?${queryParams.toString()}`;
   const response = await fetch(url);
-  
+
   if (!response.ok) {
     throw new Error(`Failed to fetch pets: ${response.status}`);
   }
-  
-  const totalCount = parseInt(response.headers.get('X-Total-Count') || '0', 10);
+
   const pets = await response.json();
+  const totalCount = parseInt(response.headers.get('X-Total-Count') || '0', 10);
+
   
   return {
-    pets,
-    totalCount: totalCount || pets.length
+    pets: pets, 
+    totalCount: totalCount
   };
 }
 

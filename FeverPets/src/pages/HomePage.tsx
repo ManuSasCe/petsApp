@@ -9,7 +9,7 @@ import PetOfDay from "../components/PetOfDay";
 import { usePetsData } from "../hooks/usePetsData";
 import Layout from "../components/layout";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 10;
 
 interface PetsResponse {
   pets: Pet[];
@@ -28,7 +28,6 @@ export default function HomePage() {
   const [pagination, setPagination] = useState<PaginationState>({
     page: parseInt(searchParams.get("page") || "1", 10),
     pageSize: PAGE_SIZE,
-    totalItems: 0,
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -48,12 +47,7 @@ export default function HomePage() {
           direction: sortOption.direction,
           limit: pagination.pageSize,
         });
-
         setPetsData(data);
-        setPagination((prev) => ({
-          ...prev,
-          totalItems: data.totalCount,
-        }));
       } catch (err) {
         setError("Failed to fetch pets. Please try again later.");
         console.error("Error fetching pets:", err);
@@ -81,68 +75,67 @@ export default function HomePage() {
     }));
   };
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil((petsData?.totalCount || 0) / pagination.pageSize),
-  );
-
   const allPets = usePetsData();
 
   return (
     <Layout>
-    <div className="m-4 space-y-8">
-      <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <h1 className="text-2xl font-bold">Explore ours Pets</h1>
-      </div>
-
-      {error && (
-        <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-          {error}
+      <div className="m-4 space-y-8">
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+          <h1 className="text-2xl font-bold">Explore ours Pets</h1>
         </div>
-      )}
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <button
-          className={`rounded-lg px-4 py-2 ${showPetOfDay ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
-          onClick={() => setShowPetOfDay(!showPetOfDay)}
-        >
-          {showPetOfDay ? "Hide Pet of the Day" : "Show Pet of the Day"}
-        </button>
-        <SortOptions sortOption={sortOption} onSortChange={handleSortChange} />
-      </div>
-
-      {showPetOfDay && (
-        <div className="mb-8">
-          <PetOfDay allPets={allPets} />
-        </div>
-      )}
-
-      {isLoading ? (
-        <div className="flex h-64 items-center justify-center">
-          <div className="size-10 animate-spin rounded-full border-b-2"></div>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {petsData?.pets?.map((pet) => <PetCard key={pet.id} pet={pet} />)}
+        {error && (
+          <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
+            {error}
           </div>
+        )}
 
-          {!isLoading && (!petsData?.pets || petsData.pets.length === 0) && (
-            <div className="p-8 text-center">
-              <p className="text-lg text-gray-500">No pets found.</p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <button
+            className={`rounded-lg px-4 py-2 ${showPetOfDay ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
+            onClick={() => setShowPetOfDay(!showPetOfDay)}
+          >
+            {showPetOfDay ? "Hide Pet of the Day" : "Show Pet of the Day"}
+          </button>
+          <SortOptions
+            sortOption={sortOption}
+            onSortChange={handleSortChange}
+          />
+        </div>
+
+        {showPetOfDay && (
+          <div className="mb-8">
+            <PetOfDay allPets={allPets} />
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className="flex h-64 items-center justify-center">
+            <div className="size-10 animate-spin rounded-full border-b-2"></div>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {petsData?.pets?.map((pet) => <PetCard key={pet.id} pet={pet} />)}
             </div>
-          )}
 
-          {petsData?.pets && petsData.pets.length > 0 && (
-            <PaginationControls
-              currentPage={pagination.page}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
-        </>
-      )}
-    </div>
+            {!isLoading && (!petsData?.pets || petsData.pets.length === 0) && (
+              <div className="p-8 text-center">
+                <p className="text-lg text-gray-500">No pets found.</p>
+              </div>
+            )}
+
+            {petsData?.pets && petsData.pets.length > 0 && (
+              <PaginationControls
+                currentPage={pagination.page}
+                totalCount={petsData?.totalCount || 0}
+                pageSize={PAGE_SIZE}
+                onPageChange={handlePageChange}
+              />
+            )}
+          </>
+        )}
+      </div>
     </Layout>
   );
 }

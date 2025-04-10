@@ -22,10 +22,8 @@ export interface Pet {
   
   export type HealthStatus = 'unhealthy' | 'healthy' | 'very-healthy';
   
-  // Add pagination types
   export interface PaginationState {
     page: number;
     pageSize: number;
-    totalItems: number;
   }
   
