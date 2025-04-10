@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { fetchPets } from "../services/petService";
 import { PaginationState, Pet, SortOption } from "../types";
 import PaginationControls from "../components/PaginationControls";
 import SortOptions from "../components/SortOptions";
 import PetCard from "../components/PetCard";
+import PetOfDay from "../components/PetOfDay";
+import { usePetsData } from "../hooks/usePetsData";
 
 const PAGE_SIZE = 8;
 
@@ -15,8 +17,6 @@ interface PetsResponse {
 
 export default function HomePage() {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const [sortOption, setSortOption] = useState<SortOption>({
     key: (searchParams.get("sortKey") as SortOption["key"]) || "name",
@@ -33,6 +33,9 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [petsData, setPetsData] = useState<PetsResponse | null>(null);
+  const [showPetOfDay, setShowPetOfDay] = useState<boolean>(
+    searchParams.get("showPetOfDay") === "true",
+  );
 
   useEffect(() => {
     const getPets = async () => {
@@ -61,18 +64,6 @@ export default function HomePage() {
     getPets();
   }, [pagination.page, pagination.pageSize, sortOption]);
 
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    params.set("sortKey", sortOption.key);
-    params.set("sortDir", sortOption.direction);
-    params.set("page", pagination.page.toString());
-
-    navigate(
-      { pathname: location.pathname, search: params.toString() },
-      { replace: true },
-    );
-  }, [sortOption, pagination.page, navigate, location.pathname, searchParams]);
-
   const handlePageChange = (newPage: number) => {
     setPagination((prev) => ({
       ...prev,
@@ -94,21 +85,33 @@ export default function HomePage() {
     Math.ceil((petsData?.totalCount || 0) / pagination.pageSize),
   );
 
+  const allPets = usePetsData();
+
   return (
     <div className="m-4 space-y-8">
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <h1 className="text-3xl font-bold">Explore Pets</h1>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <SortOptions
-            sortOption={sortOption}
-            onSortChange={handleSortChange}
-          />
-        </div>
       </div>
 
       {error && (
         <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
           {error}
+        </div>
+      )}
+
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <button
+          className={`rounded-lg px-4 py-2 ${showPetOfDay ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
+          onClick={() => setShowPetOfDay(!showPetOfDay)}
+        >
+          {showPetOfDay ? "Hide Pet of the Day" : "Show Pet of the Day"}
+        </button>
+        <SortOptions sortOption={sortOption} onSortChange={handleSortChange} />
+      </div>
+
+      {showPetOfDay && (
+        <div className="mb-8">
+          <PetOfDay allPets={allPets} />
         </div>
       )}
 

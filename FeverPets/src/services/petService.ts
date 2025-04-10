@@ -66,3 +66,15 @@ export async function fetchPetById(id: number | string): Promise<Pet> {
   
   return response.json();
 }
+
+export async function fetchAllPets(): Promise<Pet[]> {
+  const url = `${API_BASE_URL}/pets`;
+  
+  const response = await fetch(url);
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch all pets: ${response.status}`);
+  }
+  
+  return response.json();
+}
