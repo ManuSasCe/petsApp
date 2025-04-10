@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { fetchPets } from "../services/petService";
-import { PaginationState, Pet, SortOption } from "../types";
+import { Pet, SortOption } from "../types";
 import PaginationControls from "../components/PaginationControls";
 import SortOptions from "../components/SortOptions";
 import PetCard from "../components/PetCard";
 import PetOfDay from "../components/PetOfDay";
 import { usePetsData } from "../hooks/usePetsData";
 import Layout from "../components/layout";
+import { useFilterStore } from "../stores/filterStore";
+import { Spinner } from "flowbite-react";
 
 const PAGE_SIZE = 10;
 
@@ -17,28 +18,29 @@ interface PetsResponse {
 }
 
 export default function HomePage() {
-  const [searchParams] = useSearchParams();
-
-  const [sortOption, setSortOption] = useState<SortOption>({
-    key: (searchParams.get("sortKey") as SortOption["key"]) || "name",
-    direction:
-      (searchParams.get("sortDir") as SortOption["direction"]) || "asc",
-  });
-
-  const [pagination, setPagination] = useState<PaginationState>({
-    page: parseInt(searchParams.get("page") || "1", 10),
-    pageSize: PAGE_SIZE,
-  });
-
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // Component state management
+  const [isLoading, setIsLoading] = useState(true);
   const [petsData, setPetsData] = useState<PetsResponse | null>(null);
-  const [showPetOfDay, setShowPetOfDay] = useState<boolean>(
-    searchParams.get("showPetOfDay") === "true",
-  );
+  const [showPetOfDay, setShowPetOfDay] = useState(false);
 
+  // Fetch all pets data
+  const allPets = usePetsData();
+
+  // Zustand store for filter state
+  const {
+    sortOption,
+    pagination,
+    setSortOption,
+    setPagination,
+    resetFilters
+  } = useFilterStore();
+
+  /**
+   * Fetches pets data whenever filters or pagination changes
+   * Handles loading states and error cases
+   */
   useEffect(() => {
-    const getPets = async () => {
+    const loadPets = async () => {
       try {
         setIsLoading(true);
         const data = await fetchPets({
@@ -49,89 +51,104 @@ export default function HomePage() {
         });
         setPetsData(data);
       } catch (err) {
-        setError("Failed to fetch pets. Please try again later.");
-        console.error("Error fetching pets:", err);
+        console.error("Fetch error:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    getPets();
-  }, [pagination.page, pagination.pageSize, sortOption]);
+    loadPets();
+  }, [pagination, sortOption]);
 
+  // Event handlers
   const handlePageChange = (newPage: number) => {
-    setPagination((prev) => ({
-      ...prev,
-      page: newPage,
-    }));
+    setPagination({ ...pagination, page: newPage });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSortChange = (newSortOption: SortOption) => {
     setSortOption(newSortOption);
-    setPagination((prev) => ({
-      ...prev,
-      page: 1,
-    }));
+    setPagination({ ...pagination, page: 1 });
   };
 
-  const allPets = usePetsData();
+  const handleResetFilters = () => {
+      resetFilters();
+      setShowPetOfDay(false);
+    
+  };
+
+
+  const hasActiveFilters = 
+    pagination.page !== 1 ||
+    sortOption.key !== 'name' ||
+    sortOption.direction !== 'asc';
 
   return (
     <Layout>
       <div className="m-4 space-y-8">
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <h1 className="text-2xl font-bold">Explore ours Pets</h1>
-        </div>
+        {/* Header and controls section */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <h1 className="text-2xl font-bold">Our Pets</h1>
+          
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              className={`rounded-lg px-4 py-2 ${
+                showPetOfDay ? "bg-blue-600 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setShowPetOfDay(!showPetOfDay)}
+            >
+              {showPetOfDay ? "Hide Pet of the Day" : "Show Pet of the Day"}
+            </button>
+            
+            <SortOptions
+              sortOption={sortOption}
+              onSortChange={handleSortChange}
+            />
 
-        {error && (
-          <div className="rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-            {error}
+            {hasActiveFilters && (
+              <button 
+                onClick={handleResetFilters}
+                className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200"
+              >
+                Reset Filters
+              </button>
+            )}
           </div>
-        )}
-
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <button
-            className={`rounded-lg px-4 py-2 ${showPetOfDay ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
-            onClick={() => setShowPetOfDay(!showPetOfDay)}
-          >
-            {showPetOfDay ? "Hide Pet of the Day" : "Show Pet of the Day"}
-          </button>
-          <SortOptions
-            sortOption={sortOption}
-            onSortChange={handleSortChange}
-          />
         </div>
 
+        {/* Featured pet section */}
         {showPetOfDay && (
           <div className="mb-8">
             <PetOfDay allPets={allPets} />
           </div>
         )}
 
+        {/* Main content section */}
         {isLoading ? (
-          <div className="flex h-64 items-center justify-center">
-            <div className="size-10 animate-spin rounded-full border-b-2"></div>
+          <div className="flex justify-center py-12">
+            <Spinner color="purple" aria-label="Loading..." size="xl" />
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
-              {petsData?.pets?.map((pet) => <PetCard key={pet.id} pet={pet} />)}
-            </div>
+            {petsData?.pets?.length ? (
+              <>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {petsData.pets.map((pet) => (
+                    <PetCard key={pet.id} pet={pet} />
+                  ))}
+                </div>
 
-            {!isLoading && (!petsData?.pets || petsData.pets.length === 0) && (
-              <div className="p-8 text-center">
-                <p className="text-lg text-gray-500">No pets found.</p>
-              </div>
-            )}
-
-            {petsData?.pets && petsData.pets.length > 0 && (
-              <PaginationControls
-                currentPage={pagination.page}
-                totalCount={petsData?.totalCount || 0}
-                pageSize={PAGE_SIZE}
-                onPageChange={handlePageChange}
-              />
+                <PaginationControls
+                  currentPage={pagination.page}
+                  totalCount={petsData.totalCount}
+                  pageSize={PAGE_SIZE}
+                  onPageChange={handlePageChange}
+                />
+              </>
+            ) : (
+              <p className="text-center text-gray-500 py-8">
+                No pets found
+              </p>
             )}
           </>
         )}

@@ -24,3 +24,15 @@
   - Request cancellation
   - Automatic data transformation
   - Configurable timeouts
+
+### Filter Persistence
+
+- Filter Persistence
+- To keep filters active when navigating between pages or reloading the application, a Zustand-based solution was implemented. This choice offers:
+
+  - It allows me to reset everything easier.
+  - Even if you exit the browser the state is still maintained.
+  - It is easier to maintain
+
+- Why not use parameters in the URL?
+  - I started to implement it, but I honestly felt that having Zustand installed made everything easier and simpler.
