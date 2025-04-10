@@ -7,7 +7,6 @@ import { usePetOfTheDay } from "../utils/petOfDayUtils";
 import { Pet } from "../types";
 
 export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
-  console.log("viva")
   const petOfTheDay = usePetOfTheDay(allPets);
 
   if (!allPets.length) return null;

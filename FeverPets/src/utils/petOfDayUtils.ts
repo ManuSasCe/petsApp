@@ -8,8 +8,8 @@ export const usePetOfTheDay = (allPets: Pet[]) => {
   const currentPet = usePetOfDay();
   const lastUpdated = useLastUpdated();
   const { setPetOfDay } = usePetOfDayActions();
-  //const today = getDailySeed();
-  const today = "2025-16-9";
+  const today = getDailySeed();
+  //const today = "2025-16-9";
 
   useEffect(() => {
       if (allPets.length === 0) return;
@@ -19,7 +19,6 @@ export const usePetOfTheDay = (allPets: Pet[]) => {
     if (shouldUpdate) {
       const seed = today.split('-').reduce((acc, val) => acc + parseInt(val), 0);
       const randomIndex = Math.abs(seed) % allPets.length;
-      console.log("randomIndex", randomIndex)
 
       setPetOfDay(allPets[randomIndex], today);
     }
