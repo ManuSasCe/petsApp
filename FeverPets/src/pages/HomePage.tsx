@@ -108,7 +108,7 @@ export default function HomePage() {
             {hasActiveFilters && (
               <button 
                 onClick={handleResetFilters}
-                className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200"
+                className="rounded-lg bg-red-100 px-4 py-2 text-red-700 hover:bg-red-200"
               >
                 Reset Filters
               </button>
@@ -146,7 +146,7 @@ export default function HomePage() {
                 />
               </>
             ) : (
-              <p className="text-center text-gray-500 py-8">
+              <p className="py-8 text-center text-gray-500">
                 No pets found
               </p>
             )}
