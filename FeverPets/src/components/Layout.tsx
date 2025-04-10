@@ -17,8 +17,8 @@ export default function Layout({ children }: LayoutProps) {
         </Navbar.Brand>
       </Navbar>
 
-      <main className="container mx-auto flex-1 px-2 lg:py-6">
-        <div className="mx-auto max-w-7xl">
+      <main className="container mx-auto flex-1 px-2 lg:py-4">
+        <div className="mx-auto max-w-screen-xl">
           {children}
         </div>
       </main>

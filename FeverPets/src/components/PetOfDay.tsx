@@ -48,9 +48,14 @@ export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                   {petOfTheDay.name}
                 </h3>
+                <div className="flex flex-row space-x-2">
+                    {petOfTheDay && (
+                    <HealthBadge status={calculatePetHealth(petOfTheDay)} />
+                    )}
                 <Badge color="gray" className="capitalize">
                   {petOfTheDay.kind}
                 </Badge>
+                </div>
               </div>
 
               <div className="space-y-1 text-sm">
@@ -70,15 +75,6 @@ export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
             </div>
           </div>
         </Link>
-      </div>
-
-      <div className="flex items-center justify-between border-t bg-gray-50 px-4 py-3 dark:bg-gray-800">
-        {petOfTheDay && (
-          <HealthBadge status={calculatePetHealth(petOfTheDay)} />
-        )}
-        <span className="animate-pulse text-sm text-gray-500 dark:text-gray-400">
-          Click to view details
-        </span>
       </div>
     </Card>
   );
