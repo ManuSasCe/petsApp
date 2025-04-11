@@ -15,7 +15,7 @@ export const usePetOfTheDay = (allPets: Pet[]) => {
       if (allPets.length === 0) return;
     
     const shouldUpdate = !currentPet || lastUpdated !== today;
-    
+
     if (shouldUpdate) {
       const seed = today.split('-').reduce((acc, val) => acc + parseInt(val), 0);
       const randomIndex = Math.abs(seed) % allPets.length;

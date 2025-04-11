@@ -1,23 +1,33 @@
-import { create } from 'zustand';
-import { Pet } from '../types';
+import { create } from "zustand";
+import { Pet } from "../types";
+import { persist } from "zustand/middleware";
 
 interface PetOfDayState {
   pet: Pet | null;
   lastUpdated: string;
-  actions: {
-    setPetOfDay: (pet: Pet, date: string) => void;
-  };
 }
 
-export const usePetOfDayStore = create<PetOfDayState>((set) => ({
-  pet: null,
-  lastUpdated: '',
-  actions: {
-    setPetOfDay: (pet, date) => set({ pet, lastUpdated: date }),
-  },
-}));
+interface PetOfDayActions {
+  setPetOfDay: (pet: Pet, date: string) => void;
+}
 
-// Selectores optimizados
-export const usePetOfDay = () => usePetOfDayStore((state) => state.pet);
-export const usePetOfDayActions = () => usePetOfDayStore((state) => state.actions);
-export const useLastUpdated = () => usePetOfDayStore((state) => state.lastUpdated);
+const usePetOfDayStoreBase = create<PetOfDayState & PetOfDayActions>()(
+  persist(
+    (set) => ({
+      pet: null,
+      lastUpdated: "",
+      setPetOfDay: (pet, date) => set({ pet, lastUpdated: date }),
+    }),
+    {
+      name: "pet-of-the-day-storage",
+    },
+  ),
+);
+
+export const usePetOfDay = () => usePetOfDayStoreBase((state) => state.pet);
+export const useLastUpdated = () =>
+  usePetOfDayStoreBase((state) => state.lastUpdated);
+export const usePetOfDayActions = () =>
+  usePetOfDayStoreBase((state) => ({
+    setPetOfDay: state.setPetOfDay,
+  }));
