@@ -32,16 +32,16 @@ export default function PetCard({ pet }: PetCardProps) {
       >
         <div className="flex grow flex-col">
           <div className="mb-2 flex items-center justify-between">
-            <h5 className="truncate text-lg font-bold">{pet.name}</h5>
+            <h5 className="truncate text-lg font-bold dark:text-gray-400">{pet.name}</h5>
             <Badge
               color="gray"
-              className="ml-2 shrink-0 rounded-full capitalize"
+              className="ml-2 shrink-0 rounded-full capitalize "
             >
               {t(`pet_types.${pet.kind.toLowerCase()}`)}
             </Badge>
           </div>
           <div className="grow space-y-1 text-sm">
-            <p className="line-clamp-2 text-gray-700">
+            <p className="line-clamp-2 text-gray-400">
               <span className="font-medium">{t("detail.weight")}:</span> {pet.weight} g
             </p>
             <p className="text-gray-700 dark:text-gray-400">
