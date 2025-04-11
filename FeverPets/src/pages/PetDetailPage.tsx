@@ -7,6 +7,7 @@ import { calculatePetHealth } from "../utils/healthUtils";
 import { Pet } from "../types";
 import HealthBadge from "../components/HealthBadge";
 import Layout from "../components/Layout";
+import { useTranslation } from "react-i18next";
 
 export default function PetDetailPage() {
   const { id } = useParams<string>();
@@ -14,6 +15,7 @@ export default function PetDetailPage() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pet, setPet] = useState<Pet | null>(null);
+  const { t } = useTranslation();
 
   // Parse the search params to maintain sorting when you go back
   const searchParams = new URLSearchParams(location.search);
@@ -74,7 +76,7 @@ export default function PetDetailPage() {
             className="flex items-center"
           >
             <AngleLeft className="mr-1.5 size-4" />
-            Back
+            {t("buttons.back")}
           </Button>
 
           <div className="flex items-center gap-2">
@@ -94,7 +96,7 @@ export default function PetDetailPage() {
                   className="size-full rounded-lg object-cover"
                 />
               ) : (
-                <div className="text-gray-400">No image available</div>
+                <div className="text-gray-400">{t("detail.no_image")}</div>
               )}
             </div>
           </Card>
@@ -106,14 +108,13 @@ export default function PetDetailPage() {
                   <HealthBadge status={healthStatus} />
                 </div>
                 <Badge color="gray" className="rounded-full text-sm capitalize">
-                  {pet.kind}
+                  {t(`pet_types.${pet.kind.toLowerCase()}`)}  
                 </Badge>
               </div>
               <div className="mb-4 grid grid-cols-2 gap-3 border-b border-gray-200 pb-4 md:grid-cols-3 dark:border-gray-700">
-                {/* Stats */}
                 <div className="space-y-0.5">
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Weight
+                    {t("detail.weight")}
                   </p>
                   <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {pet.weight}g
@@ -121,7 +122,7 @@ export default function PetDetailPage() {
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Height
+                    {t("detail.height")}
                   </p>
                   <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {pet.height}cm
@@ -129,7 +130,7 @@ export default function PetDetailPage() {
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Length
+                    {t("detail.length")}
                   </p>
                   <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {pet.length}cm
@@ -139,7 +140,7 @@ export default function PetDetailPage() {
                   pet.number_of_lives !== undefined && (
                     <div className="space-y-0.5">
                       <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                        Lives Left
+                        {t("detail.lives_left")}
                       </p>
                       <div className="inline-flex items-baseline space-x-1 text-xl font-semibold text-gray-900 dark:text-white">
                         <span>{pet.number_of_lives}</span>
@@ -154,7 +155,7 @@ export default function PetDetailPage() {
 
               <div className="pt-4">
                 <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                  About {pet.name}
+                  {t("detail.title")} {pet.name}
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300">
                   {pet.description}

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface PaginationControlsProps {
   currentPage: number;
   totalCount: number;
@@ -12,17 +14,18 @@ export default function PaginationControls({
   onPageChange,
 }: PaginationControlsProps) {
   const totalPages = Math.ceil(totalCount / pageSize);
+  const { t } = useTranslation();
 
   if (totalCount === 0) return null;
 
   return (
     <div className="my-6 flex flex-col items-center">
       <span className="mb-2 text-sm text-gray-700">
-        Showing <span className="font-semibold">{(currentPage - 1) * pageSize + 1}</span> -{' '}
-        <span className="font-semibold">{Math.min(currentPage * pageSize, totalCount)}</span> of{' '}
-        <span className="font-semibold">{totalCount}</span> pets
+        {t('pagination.showing')} <span className="font-semibold">{(currentPage - 1) * pageSize + 1}</span> -{' '}
+        <span className="font-semibold">{Math.min(currentPage * pageSize, totalCount)}</span> {t('pagination.of')}{' '}
+        <span className="font-semibold">{totalCount}</span> {t('pagination.pets')}
       </span>
-
+  
       <nav aria-label="Page navigation">
         <ul className="inline-flex -space-x-px text-sm">
           <li>
@@ -31,10 +34,10 @@ export default function PaginationControls({
               disabled={currentPage === 1}
               className="ms-0 flex h-9 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
             >
-              Previous
+              {t('pagination.previous')}
             </button>
           </li>
-
+  
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <li key={page}>
               <button
@@ -49,21 +52,23 @@ export default function PaginationControls({
               </button>
             </li>
           ))}
-
+  
           <li>
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage >= totalPages}
               className="flex h-9 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
             >
-              Next
+              {t('pagination.next')}
             </button>
           </li>
         </ul>
       </nav>
-
+  
       {currentPage === totalPages && totalPages > 1 && (
-        <span className="mt-2 text-xs text-gray-500">(You have reached the last page)</span>
+        <span className="mt-2 text-xs text-gray-500">
+          {t('pagination.last_page')}
+        </span>
       )}
     </div>
   );

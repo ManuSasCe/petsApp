@@ -1,5 +1,41 @@
 {
-    "about": {
-      "title": "Acerca de"
-    }
+  "detail": {
+    "title": "Acerca de",
+    "weight": "Peso",
+    "height": "Altura",
+    "length": "Longitud",
+    "lives_left": "Vidas restantes",
+    "no_image": "Imagen no disponible",
+    "description": "Descripción",
+    "dog": "Perro",
+    "cat": "Gato"
+  },
+  "buttons": {
+    "back": "Volver",
+    "show_featured": "Mostrar Mascota del Día",
+    "hide_featured": "Ocultar Mascota del Día",
+    "reset_filters": "Reiniciar Filtros"
+  },
+  "titles": {
+    "our_pets": "Nuestras Mascotas"
+  },
+  "messages": {
+    "no_pets_found": "No se encontraron mascotas",
+    "loading": "Cargando..."
+  },
+  "pet_types": {
+    "cat": "Gato",
+    "dog": "Perro"
+  },
+  "pagination": {
+    "showing": "Mostrando",
+    "of": "de",
+    "pets": "mascotas",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "last_page": "(Has llegado a la última página)"
+  },
+  "order":{
+    "orderBy": "Ordenar por:"
   }
+}

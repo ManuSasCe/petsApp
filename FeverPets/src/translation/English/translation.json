@@ -1,5 +1,41 @@
 {
-    "about": {
-      "title": "About us"
-    }
+  "detail": {
+    "title": "About",
+    "weight": "Weight",
+    "height": "Height",
+    "length": "Length",
+    "lives_left": "Lives Left",
+    "no_image": "No image available",
+    "description": "Description",
+    "dog": "Dog",
+    "cat": "Cat"
+  },
+  "buttons": {
+    "back": "Back",
+    "show_featured": "Show Pet of the Day",
+    "hide_featured": "Hide Pet of the Day",
+    "reset_filters": "Reset Filters"
+  },
+  "titles": {
+    "our_pets": "Our Pets"
+  },
+  "messages": {
+    "no_pets_found": "No pets found",
+    "loading": "Loading..."
+  },
+  "pet_types": {
+    "cat": "Cat",
+    "dog": "Dog"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of",
+    "pets": "pets",
+    "previous": "Previous",
+    "next": "Next",
+    "last_page": "(You have reached the last page)"
+  },
+  "order":{
+    "orderBy": "Order by:"
   }
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SortOption, SortDirection, SortKey } from "../types";
 import { AngleDown, AngleUp } from "flowbite-react-icons/outline";
+import { useTranslation } from "react-i18next";
 
 interface SortOptionsProps {
   sortOption: SortOption;
@@ -12,6 +13,7 @@ export default function SortOptions({
   onSortChange,
 }: SortOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const toggleDirection = () => {
     const newDirection: SortDirection =
@@ -31,7 +33,7 @@ export default function SortOptions({
           onClick={() => setIsOpen(!isOpen)}
           className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none"
         >
-          Sort by: {sortOption.key}
+          {t("order.orderBy")} {sortOption.key}
         </button>
 
         {isOpen && (
