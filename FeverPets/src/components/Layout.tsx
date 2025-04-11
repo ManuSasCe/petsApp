@@ -1,12 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Navbar, Footer } from "flowbite-react";
+import { Navbar, Footer, DarkThemeToggle, Select, NavbarCollapse } from "flowbite-react";
+import { useTranslation } from "react-i18next";
+import { ChangeEvent } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
+
+      const { i18n } = useTranslation();
+    
+      const onclickLaguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const language = e.target.value;
+        i18n.changeLanguage(language);
+      };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
       <Navbar fluid rounded className="border-b bg-white shadow-sm dark:bg-gray-800">
@@ -15,6 +25,16 @@ export default function Layout({ children }: LayoutProps) {
             Fever Pets®
           </span>
         </Navbar.Brand>
+        <NavbarCollapse>
+          <DarkThemeToggle />
+          <div className="flex justify-between">
+          <Select  onChange={onclickLaguageChange}>
+          <option value="en">En</option>
+          <option value="es">Es</option>
+        </Select >
+        </div>
+
+        </NavbarCollapse>
       </Navbar>
 
       <main className="container mx-auto flex-1 px-2 lg:py-4">

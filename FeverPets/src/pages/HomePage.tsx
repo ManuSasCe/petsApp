@@ -6,7 +6,7 @@ import SortOptions from "../components/SortOptions";
 import PetCard from "../components/PetCard";
 import PetOfDay from "../components/PetOfDay";
 import { usePetsData } from "../hooks/usePetsData";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import { useFilterStore } from "../stores/filterStore";
 import { Spinner } from "flowbite-react";
 

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { Card, Badge, Button, Spinner, Alert } from "flowbite-react";
 import { fetchPetById } from "../services/petService";
-import { AngleLeft, AngleUp } from "flowbite-react-icons/outline";
+import { AngleLeft, AngleUp, Heart } from "flowbite-react-icons/outline";
 import { calculatePetHealth } from "../utils/healthUtils";
 import { Pet } from "../types";
 import HealthBadge from "../components/HealthBadge";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 
 export default function PetDetailPage() {
   const { id } = useParams<string>();
@@ -65,30 +65,27 @@ export default function PetDetailPage() {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-7xl space-y-8">
-        <div className="mb-8 flex items-center gap-4">
-          <Button 
-            as={Link} 
-            to={backToHomeWithParams} 
-            gradientMonochrome="purple" 
-            pill 
-            className="transition-transform hover:scale-105"
+      <div className="mx-auto max-w-7xl space-y-6 px-4">
+        <div className="mb-6 flex items-center space-x-5">
+          <Button
+            as={Link}
+            to={backToHomeWithParams}
+            size="sm"
+            className="flex items-center"
           >
-            <AngleLeft className="mr-2 size-5" />
-            Back to Home
+            <AngleLeft className="mr-1.5 size-4" />
+            Back
           </Button>
-          <div className="flex items-baseline gap-3">
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
               {pet.name}
             </h1>
-            <Badge color="purple" className="px-3 py-1.5 text-lg">
-              {pet.kind.toLowerCase()}
-            </Badge>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
-          <Card className="overflow-hidden border-0 p-0 shadow-xl">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+          <Card className="overflow-hidden border-0 p-0 shadow-md">
             <div className="flex aspect-square items-center justify-center bg-gray-100 dark:bg-gray-800">
               {pet.photo_url ? (
                 <img
@@ -97,63 +94,69 @@ export default function PetDetailPage() {
                   className="size-full rounded-lg object-cover"
                 />
               ) : (
-                <div className="text-xl text-gray-400">No image available</div>
+                <div className="text-gray-400">No image available</div>
               )}
             </div>
           </Card>
 
-          <div className="space-y-6">
-            <Card className="bg-gradient-to-br from-purple-50 to-blue-50 shadow-xl dark:from-gray-800 dark:to-gray-800">
-              <div className="mb-6 flex flex-wrap items-center gap-4">
-                <HealthBadge status={healthStatus} />
+          <div className="space-y-4">
+            <Card className="bg-gradient-to-br from-purple-50 to-blue-50 shadow-md dark:from-gray-800 dark:to-gray-800">
+              <div className="flex justify-between">
+                <div className="mb-4 flex flex-wrap items-center gap-3">
+                  <HealthBadge status={healthStatus} />
+                </div>
+                <Badge color="gray" className="rounded-full text-sm capitalize">
+                  {pet.kind}
+                </Badge>
               </div>
-
-              <div className="mb-6 grid grid-cols-2 gap-4 border-b border-gray-200 pb-6 md:grid-cols-3 dark:border-gray-700">
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+              <div className="mb-4 grid grid-cols-2 gap-3 border-b border-gray-200 pb-4 md:grid-cols-3 dark:border-gray-700">
+                {/* Stats */}
+                <div className="space-y-0.5">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                     Weight
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {pet.weight}g
                   </p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                <div className="space-y-0.5">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                     Height
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {pet.height}cm
                   </p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                <div className="space-y-0.5">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                     Length
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-xl font-semibold text-gray-900 dark:text-white">
                     {pet.length}cm
                   </p>
                 </div>
                 {pet.kind.toLowerCase() === "cat" &&
                   pet.number_of_lives !== undefined && (
-                    <div className="space-y-1">
-                      <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         Lives Left
                       </p>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {pet.number_of_lives}
-                        <span className="ml-1 text-lg text-purple-600 dark:text-purple-400">
-                          ♡
-                        </span>
-                      </p>
+                      <div className="inline-flex items-baseline space-x-1 text-xl font-semibold text-gray-900 dark:text-white">
+                        <span>{pet.number_of_lives}</span>
+                        <Heart
+                          className="relative top-0.5 text-red-800"
+                          size={18}
+                        />
+                      </div>
                     </div>
                   )}
               </div>
 
-              <div className="pt-6">
-                <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+              <div className="pt-4">
+                <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                   About {pet.name}
                 </h3>
-                <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700 dark:text-gray-300">
                   {pet.description}
                 </p>
               </div>
