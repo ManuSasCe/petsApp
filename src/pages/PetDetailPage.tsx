@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, Badge, Button, Spinner, Alert } from "flowbite-react";
 import { fetchPetById } from "../services/petService";
 import { AngleLeft, AngleUp, Heart } from "flowbite-react-icons/outline";
@@ -12,14 +12,9 @@ import { useTranslation } from "react-i18next";
 export default function PetDetailPage() {
   const { id } = useParams<string>();
   const navigate = useNavigate();
-  const location = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [pet, setPet] = useState<Pet | null>(null);
   const { t } = useTranslation();
-
-  // Parse the search params to maintain sorting when you go back
-  const searchParams = new URLSearchParams(location.search);
-  const backToHomeWithParams = `/${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
   useEffect(() => {
     const getPet = async () => {
@@ -67,20 +62,15 @@ export default function PetDetailPage() {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-7xl space-y-6 px-4">
+      <div className='mx-auto max-w-7xl space-y-6 px-4'>
         <div className="mb-6 flex items-center space-x-5">
-          <Button
-            as={Link}
-            to={backToHomeWithParams}
-            size="sm"
-            className="flex items-center"
-          >
+          <Button as={Link} size="sm" className="flex items-center" to={"/"}>
             <AngleLeft className="mr-1.5 size-4" />
             {t("buttons.back")}
           </Button>
 
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
               {pet.name}
             </h1>
           </div>
@@ -108,10 +98,10 @@ export default function PetDetailPage() {
                   <HealthBadge status={healthStatus} />
                 </div>
                 <Badge color="gray" className="rounded-full text-sm capitalize">
-                  {t(`pet_types.${pet.kind.toLowerCase()}`)}  
+                  {t(`pet_types.${pet.kind.toLowerCase()}`)}
                 </Badge>
               </div>
-              <div className="mb-4 grid grid-cols-2 gap-3 border-b border-gray-200 pb-4 md:grid-cols-3 dark:border-gray-700">
+              <div className="mb-4 grid grid-cols-2 gap-3 border-b border-gray-200 pb-4 dark:border-gray-700 md:grid-cols-3">
                 <div className="space-y-0.5">
                   <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                     {t("detail.weight")}
