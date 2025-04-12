@@ -8,6 +8,7 @@ import { Pet } from "../types";
 import HealthBadge from "../components/HealthBadge";
 import Layout from "../components/Layout";
 import { useTranslation } from "react-i18next";
+import BlurredImageBackgroundCard from "../components/BlurredImageBackgroundCard";
 
 export default function PetDetailPage() {
   const { id } = useParams<string>();
@@ -79,15 +80,12 @@ export default function PetDetailPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           <Card className="overflow-hidden border-0 p-0 shadow-md">
             <div className="flex aspect-square items-center justify-center bg-gray-100 dark:bg-gray-800">
-              {pet.photo_url ? (
-                <img
-                  src={pet.photo_url}
-                  alt={pet.name}
-                  className="size-full rounded-lg object-cover"
-                />
-              ) : (
-                <div className="text-gray-400">{t("detail.no_image")}</div>
-              )}
+            
+
+                <BlurredImageBackgroundCard
+                pet={pet}
+                className="h-full w-full flex-shrink-0"/>
+           
             </div>
           </Card>
 

@@ -83,7 +83,7 @@ export default function HomePage() {
     <Layout>
       <div className="m-4 space-y-8">
         {/* Header and controls section */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col relative gap-4 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-bold dark:text-gray-400">{t("titles.our_pets")}</h1>
 
           <div className="flex flex-col gap-3 sm:flex-row">

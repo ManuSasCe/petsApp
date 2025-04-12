@@ -37,7 +37,7 @@ export default function SortOptions({
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/10 focus:outline-none">
+          <div className="absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/10 focus:outline-none">
             <div className="py-1" role="menu" aria-orientation="vertical">
               {(
                 ["name", "kind", "weight", "height", "length"] as SortKey[]

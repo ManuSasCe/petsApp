@@ -4,12 +4,13 @@
 
 ### React 18
 - Chosen for familiarity and stability
-- React 19 not used to avoid potential incompatibilities and reduce learning curve in this initial phase
+- React 19 not used to avoid potential incompatibilities and reduce learning curve in this initial phase. I tried to update to react 19, but i found some issues with flowbite.
 
 ### Flowbite + Tailwind CSS
 - Implemented to maintain visual consistency throughout the application
 - Provide predefined components that accelerate development
 - Offer flexibility for customization according to project needs
+- I feel confortable with this component library.
 
 ## Service Architecture
 
@@ -53,3 +54,15 @@ Maybe I can use a random function to get a real random number. But I think the b
 ### About Testing
 - I decided to use Jest to test this application. Since it was my first time testing the frontend, I tried to be specific and focus on testing the most important things (thanks to google, leChat AI and dev.to for helping me with this), so i needed help to understand and create my first tests. To be honest, i needed to think to create this tests, so i saw a lot of examples and ideas from diferents sources, im happy to said that i lose the fear to test in front side =) . I had several issues related to react-router V-7 and Jest. I got stuck with a problem related to an error between React-Router and Jest (TextEncoder error), but after some time (may be too long) the error was fixed. 
 - I use Jest just for comfort. I know it exists and I see a lot of documentation about Jest + React.
+
+### About blurred Image componente
+- When I was checking the application I saw that some pets did not have a correct image. We have a pet with an image with .jp (not .jpg and not the Japanese web extension was allowed in a image file!). 
+So I decided to change the way we (not) atacked this situation. 
+I created a new component (that we can use in the pet tab and in the detail page) to check if the image has the “typical” image extension on the web page. And if the url does not contain this extension... we print an icon with a small message.
+Another problem I see is that we don't have a normalized aspect ratio, so I decided to add in this component the image twice. One blurred and deformed in the backend, filling all the space I give it, and above the real image. 
+As the github text says, this app is going to have tons of pets, but with the image cache this is not going to be a problem!
+
+
+### Improvements!
+- I know I don't cover the whole application with the test, I just think it's a technical test and I don't have more time. But in a real situation, it is perfect (and preferable) to cover as many cases as possible.
+- Maybe I could have a better architecture, I have used the ‘typical’ react architecture, I think this is a small application and I prefer to have a simple architecture
