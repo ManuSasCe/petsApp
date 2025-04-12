@@ -81,3 +81,13 @@ To solve the problem I decided to refactor the "Pet" type.
 ### Improvements!
 - I know I don't cover the whole application with the test, I just think it's a technical test and I don't have more time. But in a real situation, it is perfect (and preferable) to cover as many cases as possible.
 - Maybe I could have a better architecture, I have used the ‘typical’ react architecture, I think this is a small application and I prefer to have a simple architecture
+- Perhaps the interface could be better designed, especially in the mobile part, perhaps a scroll in the table (thus allowing the bottom to be seen and thus the page layout) would make it easier to use. 
+
+
+# Final thoughts!
+In this technical test I have faced two important things:
+- front-end testing: as I said before, I haven't done any testing so far. It is true that I have needed help, documentation, countless errors when testing, things that I have not understood... The truth is that I leave here understanding even more the need to do them (when I have changed the Pet type it has given me several errors...so it has been easy to locate them just by passing the test). Although it's much more convenient to have a QA partner to do this work... it reduces the typical bugs of changing something and loading something in another part of the page. Not a bad apprenticeship after years of working.
+- Although I think it's obvious, AI mixed with documentation works wonders if you want to learn. Having a ‘fake expert’ to ask questions to, check if X thing is what I thought it was or if it's Y... Together with people who have the same problem as you and post it... learning new things is easier than ever. 
+- Maybe I let myself get carried away by the rush and I made mistakes at the beginning that have led me to be changing things at the last minute: not quite correct types, components that I changed and did not check and that I had to refactor them because they did not make any sense (for example the component that returns both the state and the colour of the ‘status’ of the animal: at some point I changed the code and I was not using half of the component).
+
+With this I bid you farewell and hope to see you soon. Best regards!
