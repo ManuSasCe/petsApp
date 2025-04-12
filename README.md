@@ -91,3 +91,5 @@ In this technical test I have faced two important things:
 - Maybe I let myself get carried away by the rush and I made mistakes at the beginning that have led me to be changing things at the last minute: not quite correct types, components that I changed and did not check and that I had to refactor them because they did not make any sense (for example the component that returns both the state and the colour of the ‘status’ of the animal: at some point I changed the code and I was not using half of the component).
 
 With this I bid you farewell and hope to see you soon. Best regards!
+
+![alt text]([http://url/to/img.png](https://imgur.com/a/mCECNaQ))
