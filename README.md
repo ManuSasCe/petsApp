@@ -1,3 +1,5 @@
+Just clone, npm install (or pnpm install) add run!
+
 # Initial Technical Decisions
 
 ## Technology Stack
@@ -90,6 +92,11 @@ In this technical test I have faced two important things:
 - Although I think it's obvious, AI mixed with documentation works wonders if you want to learn. Having a ‘fake expert’ to ask questions to, check if X thing is what I thought it was or if it's Y... Together with people who have the same problem as you and post it... learning new things is easier than ever. 
 - Maybe I let myself get carried away by the rush and I made mistakes at the beginning that have led me to be changing things at the last minute: not quite correct types, components that I changed and did not check and that I had to refactor them because they did not make any sense (for example the component that returns both the state and the colour of the ‘status’ of the animal: at some point I changed the code and I was not using half of the component).
 
-With this I bid you farewell and hope to see you soon. Best regards!
 
-![alt text]([http://url/to/img.png](https://imgur.com/a/mCECNaQ))
+<div align="center">
+  ✅Application approved by Zelda and Liara✅
+</div>
+<br/> <!-- Añade un pequeño espacio vertical si lo deseas -->
+<div align="center">
+  <img src="https://i.imgur.com/PHWv45y.png" alt="Zelda and Liara giving their approval seal" width="25%">
+</div>
