@@ -2,7 +2,7 @@
 
 import { renderHook } from '@testing-library/react';
 import { usePetOfDay, usePetOfDayActions, useLastUpdated } from '../stores/petStore';
-import { usePetOfTheDay } from '../utils/petOfDayUtils';
+import { usePetOfTheDay } from '../utils/PetOfDayUtils';
 import { mockPets } from './__mocks__/petMocks';
 
 // Mock the store hooks

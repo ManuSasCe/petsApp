@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { Pet } from "../types";
 import { API_BASE_URL, PAGE_SIZE } from "../constants";
 
@@ -71,6 +70,6 @@ export async function fetchAllPets(): Promise<Pet[]> {
       `Failed to fetch pets: ${response.status} ${response.statusText}`,
     );
   }
-  
+
   return response.json();
 }

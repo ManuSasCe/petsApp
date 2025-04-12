@@ -1,24 +1,25 @@
 // src/__tests__/mocks/petMocks.ts
 
-import { Pet } from "../../types";
+import { Pet, Cat, Dog } from "../../types";
 
+// --- Valid Mocks ---
 
-export const validCatMock: Pet = {
+export const validCatMock: Cat = {
   id: 1,
   name: "Zelda",
-  kind: "cat",
+  kind: "cat", 
   weight: 3500,
   height: 25,
   length: 45,
   photo_url: "https://beautifulCats.com/Zelda.jpg",
   description: "My cat",
-  number_of_lives: 9,
+  number_of_lives: 9, 
 };
 
-export const validDogMock: Pet = {
+export const validDogMock: Dog = {
   id: 2,
   name: "Liara",
-  kind: "dog",
+  kind: "dog", 
   weight: 20000,
   height: 60,
   length: 90,
@@ -26,12 +27,11 @@ export const validDogMock: Pet = {
   description: "My second cat, but i need a dog mock =(",
 };
 
-
 export const mockPets: Pet[] = [
     {
         id: 1,
         name: "Buddy",
-        kind: "dog",
+        kind: "dog", 
         weight: 20000,
         height: 60,
         length: 90,
@@ -41,7 +41,7 @@ export const mockPets: Pet[] = [
       {
         id: 2,
         name: "Buddy2",
-        kind: "dog",
+        kind: "dog", 
         weight: 20000,
         height: 60,
         length: 90,
@@ -51,59 +51,51 @@ export const mockPets: Pet[] = [
       {
         id: 3,
         name: "Buddy3",
-        kind: "cat",
-        weight: 20000,
-        height: 60,
-        length: 90,
+        kind: "cat", 
+        weight: 5000, 
+        height: 30,
+        length: 50,
         photo_url: "https://beautifulCats.com/buddy3.jpg",
         description: "An amazing and loyal and friendly cat",
+        number_of_lives: 7, 
       },
       {
         id: 4,
         name: "Buddy4",
-        kind: "dog",
-        weight: 20000,
-        height: 60,
-        length: 90,
+        kind: "dog", // Es Dog
+        weight: 22000,
+        height: 65,
+        length: 95,
         photo_url: "https://beautifulCats.com/buddy4.jpg",
         description: "A super loyal and friendly dog",
       },
       {
         id: 5,
         name: "Buddy5",
-        kind: "cat",
-        weight: 20000,
-        height: 60,
-        length: 90,
+        kind: "cat", 
+        weight: 4000, 
+        height: 28,
+        length: 48,
         photo_url: "https://beautifulCats.com/buddy5.jpg",
         description: "A magic and loyal and friendly dog (or maybe is a cat)",
+        number_of_lives: 2, 
       }
-  ] as Pet[];
+  ];
 
+// --- No Valid Mocks ---
 
-// Invalid mocks 
-
-export const invalidDogWithLivesMock: Pet = {
-  ...validDogMock,
-  number_of_lives: 1 // Dogs shouldn't have number_of_lives
-};
-
-export const invalidCatWithoutLivesMock: Pet = {
+export const invalidNegativeWeightMock: Cat = { 
   ...validCatMock,
-  number_of_lives: undefined // Cats should have number_of_lives
+  weight: -666
 };
 
-export const invalidNegativeWeightMock: Pet = {
+export const invalidNegativeHeightMock: Cat = { 
   ...validCatMock,
-  weight: -666 // Pets can not have negative weight
+  height: -1
 };
 
-export const invalidNegativeHeightMock: Pet = {
+export const invalidNegativeLengthMock: Cat = { 
   ...validCatMock,
-  height: -1 // Pets can not have negative height
+  length: -1
 };
 
-export const invalidNegativeLengthMock: Pet = {
-  ...validCatMock,
-  length: -1 // Pets can not have negative length
-};

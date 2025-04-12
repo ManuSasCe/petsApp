@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, screen, waitFor } from "@testing-library/react"; // waitFor might be needed if healthbadge is async, but likely not for image now
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import PetOfDay from "../components/PetOfDay";
-import { usePetOfTheDay } from "../utils/petOfDayUtils";
-import { calculatePetHealth } from "../utils/healthUtils";
+import { usePetOfTheDay } from "../utils/PetOfDayUtils";
+import { calculatePetHealth } from "../utils/HealthUtils";
 import { validCatMock, validDogMock } from './__mocks__/petMocks';
-import { Pet } from '../types'; // Import Pet type if needed by mock
+import { Pet } from '../types'; 
 
 // --- Mock react-i18next ---
 jest.mock('react-i18next', () => ({
@@ -55,7 +55,7 @@ jest.mock("../components/utils/BlurredImageBackgroundCard", () => {
         <img
             src={pet.photo_url}
             alt={pet.name} // Simple alt text for testing, i18n is tricky here
-            data-testid={`blurred-img-${pet.id}`} // Add test id if needed
+            data-testid={`blurred-img-${pet.id}`} 
         />
     );
 });

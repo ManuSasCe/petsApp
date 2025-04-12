@@ -1,5 +1,5 @@
 import { HealthStatus } from "../../types";
-import { getHealthColor, getHealthStatusLabel } from "../../utils/healthUtils";
+import { getHealthColor, getHealthStatusLabel } from "../../utils/HealthUtils";
 
 interface HealthBadgeProps {
   status: HealthStatus;

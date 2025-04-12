@@ -26,7 +26,7 @@
   },
   "messages": {
     "no_pets_found": "No pets found",
-    "loading": "Loading..."
+    "loading": "Loading pet details"
   },
   "pet_types": {
     "cat": "Cat",

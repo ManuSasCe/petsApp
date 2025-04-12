@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, Badge, Button, Spinner, Alert } from "flowbite-react";
 import { fetchPetById } from "../services/petService";
 import { AngleLeft, AngleUp, Heart } from "flowbite-react-icons/outline";
-import { calculatePetHealth } from "../utils/healthUtils";
+import { calculatePetHealth } from "../utils/HealthUtils";
 import { Pet } from "../types";
 import HealthBadge from "../components/utils/HealthBadge";
 import Layout from "../components/Layout";
@@ -41,7 +41,7 @@ export default function PetDetailPage() {
     return (
       <>
         <div className="flex h-64 items-center justify-center">
-          <Spinner aria-label="Loading pet details" size="xl" />
+          <Spinner aria-label={t("messages.loading")} size="xl" />
         </div>
       </>
     );
@@ -128,21 +128,20 @@ export default function PetDetailPage() {
                     {pet.length}cm
                   </p>
                 </div>
-                {pet.kind.toLowerCase() === "cat" &&
-                  pet.number_of_lives !== undefined && (
-                    <div className="space-y-0.5">
-                      <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                        {t("detail.lives_left")}
-                      </p>
-                      <div className="inline-flex items-baseline space-x-1 text-xl font-semibold text-gray-900 dark:text-white">
-                        <span>{pet.number_of_lives}</span>
-                        <Heart
-                          className="relative top-0.5 text-red-800"
-                          size={18}
-                        />
-                      </div>
+                {pet.kind === 'cat' && (
+                  <div className="space-y-0.5">
+                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                      {t("detail.lives_left")}
+                    </p>
+                    <div className="inline-flex items-baseline space-x-1 text-xl font-semibold text-gray-900 dark:text-white">
+                      <span>{pet.number_of_lives}</span>
+                      <Heart
+                        className="relative top-0.5 text-red-800" 
+                        size={18} 
+                      />
                     </div>
-                  )}
+                  </div>
+                )}
               </div>
 
               <div className="pt-4">

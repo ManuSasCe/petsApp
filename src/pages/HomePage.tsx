@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { fetchPets } from "../services/petService";
-import { Pet, SortOption } from "../types";
+import { useState } from "react";
+import { SortOption } from "../types";
 import PaginationControls from "../components/utils/PaginationControls";
 import PetCard from "../components/PetCard";
 import PetOfDay from "../components/PetOfDay";
@@ -11,11 +10,6 @@ import { Spinner } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import SortOptions from "../components/utils/SortOptions";
 import { getPaginatedPets } from "../hooks/getPaginatedPets";
-
-interface PetsResponse {
-  pets: Pet[];
-  totalCount: number;
-}
 
 export default function HomePage() {
   // Component state management

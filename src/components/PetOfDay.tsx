@@ -1,9 +1,9 @@
 import { Card, Spinner } from "flowbite-react";
 import { CalendarEdit } from "flowbite-react-icons/outline";
-import { usePetOfTheDay } from "../utils/petOfDayUtils";
 import { Pet } from "../types";
 import { useTranslation } from "react-i18next";
 import PetCard from "./PetCard";
+import { usePetOfTheDay } from "../utils/PetOfDayUtils";
 
 export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
   const petOfTheDay = usePetOfTheDay(allPets);

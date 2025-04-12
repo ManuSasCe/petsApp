@@ -63,6 +63,21 @@ Another problem I see is that we don't have a normalized aspect ratio, so I deci
 As the github text says, this app is going to have tons of pets, but with the image cache this is not going to be a problem!
 
 
+### Problems with the
+- I have changed the type "pet". I made a big mistake at the beginning. The Pet object contained all the parameters..., so both cat and dog contained the same thing. I simply had the cat's ‘lives’ as a type that might not be there.
+
+This is a problem for the future (as the github text says) if we add new pet types.
+
+Although this had to be solved at the beginning, I thought it was better to solve it now and not leave it like this so...
+#### Solution: Discriminated Unions
+
+To solve the problem I decided to refactor the "Pet" type.
+
+ - A "Pet" interface contains the common properties.
+ - Specific interfaces ("Cat", "Dog") extend "Pet", add their unique properties (like "number_of_lives" for "Cat", which is now mandatory of course).
+ - The main type "Pet" is now a union of these two types.
+
+
 ### Improvements!
 - I know I don't cover the whole application with the test, I just think it's a technical test and I don't have more time. But in a real situation, it is perfect (and preferable) to cover as many cases as possible.
 - Maybe I could have a better architecture, I have used the ‘typical’ react architecture, I think this is a small application and I prefer to have a simple architecture

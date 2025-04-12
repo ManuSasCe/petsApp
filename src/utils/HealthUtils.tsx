@@ -1,10 +1,12 @@
 import { Pet, HealthStatus } from "../types";
-import i18n from "../i18n"; 
+import i18n from "../i18n";
 
-  // For cats with 1 life, they are always unhealthy =(
-    export function calculatePetHealth(pet: Pet): HealthStatus {
-  if (pet.kind.toLowerCase() === "cat" && pet.number_of_lives === 1) {
-    return "unhealthy";
+// For cats with 1 life, they are always unhealthy =(
+export function calculatePetHealth(pet: Pet): HealthStatus {
+  if (pet.kind === "cat") {
+    if (pet.number_of_lives === 1) {
+      return "unhealthy"; // Cats with 1 life rule
+    }
   }
   const healthRatio = pet.weight / (pet.height * pet.length);
   if (healthRatio < 2 || healthRatio > 5) {
@@ -16,7 +18,6 @@ import i18n from "../i18n";
   }
 }
 
-
 export function getHealthStatusLabel(status: HealthStatus): string {
   switch (status) {
     case "unhealthy":
@@ -24,7 +25,7 @@ export function getHealthStatusLabel(status: HealthStatus): string {
     case "healthy":
       return i18n.t("health_status.healthy");
     case "very-healthy":
-      return i18n.t("health_status.very_healthy"); 
+      return i18n.t("health_status.very_healthy");
     default:
       return i18n.t("health_status.unknown");
   }
