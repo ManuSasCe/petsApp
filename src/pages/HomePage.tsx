@@ -48,7 +48,6 @@ export default function HomePage() {
   };
 
   const hasActiveFilters =
-    pagination.page !== 1 ||
     sortOption.key !== "name" ||
     sortOption.direction !== "asc";
 

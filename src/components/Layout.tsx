@@ -20,6 +20,7 @@ export default function Layout({ children }: LayoutProps) {
     const language = e.target.value;
     i18n.changeLanguage(language);
     localStorage.setItem('language', language);
+    
   };
 
   return (
@@ -37,7 +38,7 @@ export default function Layout({ children }: LayoutProps) {
         <NavbarCollapse>
           <DarkThemeToggle />
           <div className="flex justify-between">
-            <Select onChange={onclickLaguageChange}>
+            <Select value={i18n.language} onChange={onclickLaguageChange}>
               <option value="en">En</option>
               <option value="es">Es</option>
             </Select>
