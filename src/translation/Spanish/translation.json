@@ -10,6 +10,12 @@
     "dog": "Perro",
     "cat": "Gato"
   },
+  "pet_day":{
+    "title": "Mascota del día",
+    "loading": "Cargando la mascota del día",
+    "error": "We have no pet of the day, try again in a few minutes!!"
+
+  },
   "buttons": {
     "back": "Volver",
     "show_featured": "Mostrar Mascota del Día",

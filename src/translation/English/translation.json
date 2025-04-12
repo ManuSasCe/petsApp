@@ -10,6 +10,11 @@
     "dog": "Dog",
     "cat": "Cat"
   },
+  "pet_day":{
+    "title": "Pet of the day",
+    "loading": "Loading pet of the day",
+    "error": "We have no pet of the day, try again in a few minutes!!"
+  },
   "buttons": {
     "back": "Back",
     "show_featured": "Show Pet of the Day",

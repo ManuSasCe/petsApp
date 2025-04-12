@@ -21,9 +21,7 @@ export default function HealthBadge({ status, className }: HealthBadgeProps) {
   };
   
   return (
-    <span 
-      className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${getBadgeClasses()} ${className || ""}`}
-    >
+    <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${getBadgeClasses()} ${className || ""}`}>
       {status === "unhealthy" 
         ? "Unhealthy" 
         : status === "healthy" 

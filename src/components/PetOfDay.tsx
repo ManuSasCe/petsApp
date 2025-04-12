@@ -5,21 +5,25 @@ import { calculatePetHealth } from "../utils/healthUtils";
 import HealthBadge from "./HealthBadge";
 import { usePetOfTheDay } from "../utils/petOfDayUtils";
 import { Pet } from "../types";
+import { useTranslation } from "react-i18next";
 
 export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
   const petOfTheDay = usePetOfTheDay(allPets);
+  const { t } = useTranslation();
 
-  if (!allPets.length) return null;
+  if (!allPets.length) return (
+    <p>{t("pet_day.error")}</p>
+  );
 
   if (!petOfTheDay) {
     return (
       <Card className="animate-pulse text-center">
         <div className="flex items-center justify-center">
           <CalendarEdit className="mr-2 size-5" />
-          <h5 className="text-lg font-medium">Pet of the Day</h5>
+          <h5 className="text-lg font-medium">{t("pet_day.title")}</h5>
         </div>
         <div className="flex h-40 items-center justify-center">
-          <Spinner aria-label="Loading pet of the day" />
+          <Spinner aria-label={t("pet_day.loading")} />
         </div>
       </Card>
     );
@@ -30,7 +34,7 @@ export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
       <div className="text-center">
         <div className="mb-4 flex items-center justify-center">
           <CalendarEdit className="mr-2 size-5" />
-          <h5 className="text-lg font-medium">Pet of the Day</h5>
+          <h5 className="text-lg font-medium">{t("pet_day.title")}</h5>
         </div>
 
         <Link to={`/pet/${petOfTheDay.id}`} className="block">
@@ -60,15 +64,15 @@ export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
 
               <div className="space-y-1 text-sm">
                 <p className="text-gray-700 dark:text-gray-300">
-                  <span className="font-medium">Weight:</span>{" "}
+                  <span className="font-medium">{t("detail.weight")}:</span>{" "}
                   {petOfTheDay.weight} g
                 </p>
                 <p className="text-gray-700 dark:text-gray-300">
-                  <span className="font-medium">Height:</span>{" "}
+                  <span className="font-medium">{t("detail.height")}:</span>{" "}
                   {petOfTheDay.height} cm
                 </p>
                 <p className="text-gray-700 dark:text-gray-300">
-                  <span className="font-medium">Length:</span>{" "}
+                  <span className="font-medium">{t("detail.length")}:</span>{" "}
                   {petOfTheDay.length} cm
                 </p>
               </div>
