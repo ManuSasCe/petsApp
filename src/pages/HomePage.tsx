@@ -4,16 +4,13 @@ import { Pet, SortOption } from "../types";
 import PaginationControls from "../components/utils/PaginationControls";
 import PetCard from "../components/PetCard";
 import PetOfDay from "../components/PetOfDay";
-import { usePetsData } from "../hooks/usePetsData";
+import { getAllPets } from "../hooks/getAllPets";
 import Layout from "../components/Layout";
 import { useFilterActions, useFilterStore } from "../stores/filterStore";
 import { Spinner } from "flowbite-react";
 import { useTranslation } from "react-i18next";
-import { Toast, ToastToggle } from "flowbite-react";
-import { toast } from "react-toastify";
 import SortOptions from "../components/utils/SortOptions";
-
-const PAGE_SIZE = 10;
+import { getPaginatedPets } from "../hooks/getPaginatedPets";
 
 interface PetsResponse {
   pets: Pet[];
@@ -22,13 +19,12 @@ interface PetsResponse {
 
 export default function HomePage() {
   // Component state management
-  const [isLoading, setIsLoading] = useState(true);
-  const [petsData, setPetsData] = useState<PetsResponse | null>(null);
+
   const [showPetOfDay, setShowPetOfDay] = useState(false);
   const { t } = useTranslation();
 
   // Fetch all pets data
-  const allPets = usePetsData();
+  const allPets = getAllPets();
 
   // Zustand store for filter state
   const { sortOption, pagination } = useFilterStore();
@@ -39,26 +35,7 @@ export default function HomePage() {
    * Fetches pets data whenever filters or pagination changes
    * Handles loading states and error cases
    */
-  useEffect(() => {
-    const loadPets = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchPets({
-          page: pagination.page,
-          sort: sortOption.key,
-          direction: sortOption.direction,
-          limit: pagination.pageSize,
-        });
-        setPetsData(data);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPets();
-  }, [pagination, sortOption]);
+  const { petsData, isLoading } = getPaginatedPets(pagination, sortOption);
 
   // Event handlers
   const handlePageChange = (newPage: number) => {
@@ -83,7 +60,7 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <div className="m-4 space-y-8">
+      <div className="space-y-4">
         {/* Header and controls section */}
         <div className="flex flex-col relative gap-4 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-bold dark:text-gray-400">
@@ -145,7 +122,6 @@ export default function HomePage() {
                 <PaginationControls
                   currentPage={pagination.page}
                   totalCount={petsData.totalCount}
-                  pageSize={PAGE_SIZE}
                   onPageChange={handlePageChange}
                 />
               </>

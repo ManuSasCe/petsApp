@@ -9,6 +9,7 @@ import HealthBadge from "../components/utils/HealthBadge";
 import Layout from "../components/Layout";
 import { useTranslation } from "react-i18next";
 import BlurredImageBackgroundCard from "../components/utils/BlurredImageBackgroundCard";
+import { toast } from "react-toastify";
 
 export default function PetDetailPage() {
   const { id } = useParams<string>();
@@ -25,6 +26,8 @@ export default function PetDetailPage() {
         setPet(data);
       } catch (err) {
         console.error("Error fetching pet:", err);
+        toast.error("we have an error!");
+
         setTimeout(() => navigate("/"), 2000);
       } finally {
         setIsLoading(false);
@@ -64,7 +67,10 @@ export default function PetDetailPage() {
   return (
     <Layout>
       <div className="mx-auto max-w-7xl space-y-6 px-4">
-        <div className="mb-6 flex items-center space-x-5">
+        <div
+          className="mb-6 w-full flex justify-between
+         items-center space-x-5"
+        >
           <Button as={Link} size="sm" className="flex items-center" to={"/"}>
             <AngleLeft className="mr-1.5 size-4" />
             {t("buttons.back")}
@@ -77,7 +83,7 @@ export default function PetDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8">
           <Card className="overflow-hidden border-0 p-0 shadow-md">
             <div className="flex aspect-square items-center justify-center bg-gray-100 dark:bg-gray-800">
               <BlurredImageBackgroundCard

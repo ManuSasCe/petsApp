@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { fetchAllPets } from "../services/petService";
 import { Pet } from "../types";
+import { toast } from "react-toastify";
 
-export const usePetsData = () => {
+export const getAllPets = () => {
   const [pets, setPets] = useState<Pet[]>([]);
 
   useEffect(() => {
@@ -11,7 +12,8 @@ export const usePetsData = () => {
         const fetchedPets = await fetchAllPets();
         setPets(fetchedPets);
       } catch (error) {
-        console.error("Error fetching pets:", error);
+        toast.error("we have an error!");
+        console.error("Fetch error:", error);
       }
     };
 

@@ -23,7 +23,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
+    <div className="flex min-h-screen flex-col bg-gray-50 space-y-4 dark:bg-gray-900">
       <Navbar
         fluid
         rounded

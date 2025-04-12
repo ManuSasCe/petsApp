@@ -1,19 +1,18 @@
 import { useTranslation } from "react-i18next";
+import { PAGE_SIZE } from "../../constants";
 
 interface PaginationControlsProps {
   currentPage: number;
   totalCount: number;
-  pageSize: number;
   onPageChange: (page: number) => void;
 }
 
 export default function PaginationControls({
   currentPage,
   totalCount,
-  pageSize,
   onPageChange,
 }: PaginationControlsProps) {
-  const totalPages = Math.ceil(totalCount / pageSize);
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
   const { t } = useTranslation();
 
   if (totalCount === 0) return null;
@@ -23,11 +22,11 @@ export default function PaginationControls({
       <span className="mb-2 text-sm text-gray-700">
         {t("pagination.showing")}{" "}
         <span className="font-semibold">
-          {(currentPage - 1) * pageSize + 1}
+          {(currentPage - 1) * PAGE_SIZE + 1}
         </span>{" "}
         -{" "}
         <span className="font-semibold">
-          {Math.min(currentPage * pageSize, totalCount)}
+          {Math.min(currentPage * PAGE_SIZE, totalCount)}
         </span>{" "}
         {t("pagination.of")} <span className="font-semibold">{totalCount}</span>{" "}
         {t("pagination.pets")}

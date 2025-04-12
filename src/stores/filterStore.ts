@@ -5,13 +5,12 @@ interface FilterState {
   sortOption: SortOption;
   pagination: {
     page: number;
-    pageSize: number;
   };
 }
 
 interface FilterActions {
   setSortOption: (option: SortOption) => void;
-  setPagination: (pagination: { page: number; pageSize: number }) => void;
+  setPagination: (pagination: { page: number }) => void;
   resetFilters: () => void;
 }
 
@@ -23,8 +22,7 @@ const useFilterStoreBase = create<FilterState & FilterActions>()(
         direction: 'asc',
       },
       pagination: {
-        page: 1,
-        pageSize: 10,
+        page: 1
       },
       setSortOption: (sortOption) => set({ sortOption }),
       setPagination: (pagination) => set({ pagination }),
@@ -34,8 +32,7 @@ const useFilterStoreBase = create<FilterState & FilterActions>()(
           direction: 'asc',
         },
         pagination: {
-          page: 1,
-          pageSize: 10,
+          page: 1
         },
       }),
     }),
