@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Spinner } from "flowbite-react";
 import { CameraPhoto } from "flowbite-react-icons/outline";
-import { Pet } from "../types";
+import { Pet } from "../../types";
 import { useTranslation } from "react-i18next";
 
 interface BlurredImageBackgroundCardProps {
@@ -19,9 +19,9 @@ const isSupportedImageType = (url: string): boolean => {
 
 const BlurredImageBackgroundCard: React.FC<BlurredImageBackgroundCardProps> = ({
   pet,
-  className = "h-56 w-full", 
+  className = "h-56 w-full",
 }) => {
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
 
   const [loadStatus, setLoadStatus] = useState<"loading" | "loaded" | "error">(
     "loading",
@@ -39,11 +39,11 @@ const BlurredImageBackgroundCard: React.FC<BlurredImageBackgroundCardProps> = ({
     }
 
     setLoadStatus("loading");
-    const img = new Image(); 
-    img.onload = () => setLoadStatus("loaded"); 
-    img.onerror = () => setLoadStatus("error"); 
-    img.src = imageUrl; 
-  }, [imageUrl, isValidType]); 
+    const img = new Image();
+    img.onload = () => setLoadStatus("loaded");
+    img.onerror = () => setLoadStatus("error");
+    img.src = imageUrl;
+  }, [imageUrl, isValidType]);
 
   const altText = t("No valid photo", { name: pet.name, kind: pet.kind });
 
@@ -55,7 +55,7 @@ const BlurredImageBackgroundCard: React.FC<BlurredImageBackgroundCardProps> = ({
         <div
           className="absolute inset-0 size-full scale-110 blur-xl brightness-75"
           style={{
-            backgroundImage: `url(${imageUrl})`, 
+            backgroundImage: `url(${imageUrl})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -82,7 +82,7 @@ const BlurredImageBackgroundCard: React.FC<BlurredImageBackgroundCardProps> = ({
           <img
             className="z-10 h-full w-full object-scale-down"
             src={imageUrl}
-            alt={altText} 
+            alt={altText}
           />
         )}
       </div>

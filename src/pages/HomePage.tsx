@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchPets } from "../services/petService";
 import { Pet, SortOption } from "../types";
-import PaginationControls from "../components/PaginationControls";
-import SortOptions from "../components/SortOptions";
+import PaginationControls from "../components/utils/PaginationControls";
 import PetCard from "../components/PetCard";
 import PetOfDay from "../components/PetOfDay";
 import { usePetsData } from "../hooks/usePetsData";
@@ -10,6 +9,9 @@ import Layout from "../components/Layout";
 import { useFilterActions, useFilterStore } from "../stores/filterStore";
 import { Spinner } from "flowbite-react";
 import { useTranslation } from "react-i18next";
+import { Toast, ToastToggle } from "flowbite-react";
+import { toast } from "react-toastify";
+import SortOptions from "../components/utils/SortOptions";
 
 const PAGE_SIZE = 10;
 
@@ -84,7 +86,9 @@ export default function HomePage() {
       <div className="m-4 space-y-8">
         {/* Header and controls section */}
         <div className="flex flex-col relative gap-4 md:flex-row md:items-center md:justify-between">
-          <h1 className="text-2xl font-bold dark:text-gray-400">{t("titles.our_pets")}</h1>
+          <h1 className="text-2xl font-bold dark:text-gray-400">
+            {t("titles.our_pets")}
+          </h1>
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <button

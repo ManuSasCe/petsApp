@@ -5,10 +5,10 @@ import { fetchPetById } from "../services/petService";
 import { AngleLeft, AngleUp, Heart } from "flowbite-react-icons/outline";
 import { calculatePetHealth } from "../utils/healthUtils";
 import { Pet } from "../types";
-import HealthBadge from "../components/HealthBadge";
+import HealthBadge from "../components/utils/HealthBadge";
 import Layout from "../components/Layout";
 import { useTranslation } from "react-i18next";
-import BlurredImageBackgroundCard from "../components/BlurredImageBackgroundCard";
+import BlurredImageBackgroundCard from "../components/utils/BlurredImageBackgroundCard";
 
 export default function PetDetailPage() {
   const { id } = useParams<string>();
@@ -63,7 +63,7 @@ export default function PetDetailPage() {
 
   return (
     <Layout>
-      <div className='mx-auto max-w-7xl space-y-6 px-4'>
+      <div className="mx-auto max-w-7xl space-y-6 px-4">
         <div className="mb-6 flex items-center space-x-5">
           <Button as={Link} size="sm" className="flex items-center" to={"/"}>
             <AngleLeft className="mr-1.5 size-4" />
@@ -80,12 +80,10 @@ export default function PetDetailPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           <Card className="overflow-hidden border-0 p-0 shadow-md">
             <div className="flex aspect-square items-center justify-center bg-gray-100 dark:bg-gray-800">
-            
-
-                <BlurredImageBackgroundCard
+              <BlurredImageBackgroundCard
                 pet={pet}
-                className="h-full w-full flex-shrink-0"/>
-           
+                className="h-full w-full flex-shrink-0"
+              />
             </div>
           </Card>
 

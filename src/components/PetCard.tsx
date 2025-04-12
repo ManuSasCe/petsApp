@@ -2,9 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { Card, Badge } from "flowbite-react";
 import { Pet } from "../types";
 import { calculatePetHealth } from "../utils/healthUtils";
-import HealthBadge from "./HealthBadge";
+import HealthBadge from "./utils/HealthBadge";
 import { useTranslation } from "react-i18next";
-import BlurredImageBackgroundCard from "./BlurredImageBackgroundCard";
+import BlurredImageBackgroundCard from "./utils/BlurredImageBackgroundCard";
 
 interface PetCardProps {
   pet: Pet;

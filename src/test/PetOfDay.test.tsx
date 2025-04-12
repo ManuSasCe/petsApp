@@ -1,33 +1,40 @@
 import React from 'react';
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react"; // waitFor might be needed if healthbadge is async, but likely not for image now
 import { BrowserRouter } from "react-router-dom";
-import PetOfDay from "../components/PetOfDay"; 
-import { usePetOfTheDay } from "../utils/petOfDayUtils"; 
-import { calculatePetHealth } from "../utils/healthUtils"; 
-import { validCatMock, validDogMock } from './__mocks__/petMocks'; 
+import PetOfDay from "../components/PetOfDay";
+import { usePetOfTheDay } from "../utils/petOfDayUtils";
+import { calculatePetHealth } from "../utils/healthUtils";
+import { validCatMock, validDogMock } from './__mocks__/petMocks';
+import { Pet } from '../types'; // Import Pet type if needed by mock
 
 // --- Mock react-i18next ---
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
     return {
-      t: (str: string) => {
-        if (str === 'pet_day.title') return 'Pet of the Day';
-        if (str === 'pet_day.loading') return 'Loading pet of the day'; // aria-label content
-        if (str === 'detail.weight') return 'Weight';
-        if (str === 'detail.height') return 'Height';
-        if (str === 'detail.length') return 'Length';
-        if (str === 'pet_day.error') return 'We have no pet of the day, try again in a few minutes!!';
-        return str;
+      t: (str: string, options?: { name?: string, kind?: string }) => {
+        // Map keys to simple strings for the test
+        const map: Record<string, string> = {
+          'pet_day.title': 'Pet of the Day',
+          'pet_day.loading': 'Loading pet of the day',
+          'pet_day.error': 'We have no pet of the day, try again in a few minutes!!',
+          'detail.weight': 'Weight',
+          'detail.height': 'Height',
+          'detail.length': 'Length',
+          'pet_types.cat': 'Cat', 
+          'pet_types.dog': 'Dog',  
+          'No valid photo': `No valid photo for ${options?.name}`, 
+        };
+        return map[str] || str; 
       },
       i18n: {
         changeLanguage: () => new Promise(() => {}),
+        language: 'en', // Provide a default language
       },
     };
   },
 }));
-// --- End of Mock ---
+// --- End of i18n Mock ---
 
-// Mock the custom hooks used by the component
 jest.mock("../utils/petOfDayUtils", () => ({
   usePetOfTheDay: jest.fn(),
 }));
@@ -35,6 +42,32 @@ jest.mock("../utils/petOfDayUtils", () => ({
 jest.mock("../utils/healthUtils", () => ({
   calculatePetHealth: jest.fn(),
 }));
+
+// Mock the child component responsible for image loading complexity
+jest.mock("../components/utils/BlurredImageBackgroundCard", () => {
+    // Define the props structure for type safety inside the mock
+    interface MockBlurredImageProps {
+        pet: Pet;
+        className?: string;
+    }
+    // Return a simple functional component mock
+    return ({ pet }: MockBlurredImageProps) => (
+        <img
+            src={pet.photo_url}
+            alt={pet.name} // Simple alt text for testing, i18n is tricky here
+            data-testid={`blurred-img-${pet.id}`} // Add test id if needed
+        />
+    );
+});
+// --- End of BlurredImageBackgroundCard Mock ---
+
+// Mock HealthBadge if it has complex logic or makes tests fail
+jest.mock("../components/utils/HealthBadge", () => {
+    return ({ status }: { status: string }) => (
+        <span data-testid="health-badge">{`Health: ${status}`}</span>
+    );
+});
+
 
 // Helper function to render components needing React Router context
 const renderWithRouter = (ui: React.ReactElement) => {
@@ -47,94 +80,113 @@ describe("PetOfDay Component", () => {
     jest.clearAllMocks();
   });
 
-  test("1. renders nothing when there are no pets passed", () => {
-    // Setup: Mock the hook to return null (though it might not even be called)
+  test("1. renders error message when there are no pets passed", () => {
+    // Setup: Hook might not be called, but ensure it returns null if called
     (usePetOfTheDay as jest.Mock).mockReturnValue(null);
-    // Action: Render the component with no pets
-    renderWithRouter(<PetOfDay allPets={[]} />);
 
     // Action: Render the component with an empty allPets array
+    renderWithRouter(<PetOfDay allPets={[]} />);
+
+    // Assertion: Check for the specific error message rendered by PetOfDay
     expect(screen.getByText("We have no pet of the day, try again in a few minutes!!")).toBeInTheDocument();
+    // Ensure spinner or pet card details are NOT present
+    expect(screen.queryByLabelText("Loading pet of the day")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
+
 
   test("2. shows a spinner when pets exist but pet of the day is not yet determined", () => {
     // Setup: Mock the hook to return null, simulating loading state
     (usePetOfTheDay as jest.Mock).mockReturnValue(null);
-    // Action: Render the component with some pets
-    renderWithRouter(<PetOfDay allPets={[validCatMock]} />);
 
-    // Assertion: Check for the title 
+    // Action: Render the component with some pets
+    renderWithRouter(<PetOfDay allPets={[validCatMock]} />); 
+
+    // Assertion: Check for the title
     expect(screen.getByText("Pet of the Day")).toBeInTheDocument();
-    // Assertion: Check for the spinner using its aria-label 
+    // Assertion: Check for the spinner using its aria-label (defined in PetOfDay JSX)
     expect(screen.getByLabelText("Loading pet of the day")).toBeInTheDocument();
+    // Ensure error message or pet card details are NOT present
+    expect(screen.queryByText("We have no pet of the day, try again in a few minutes!!")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 
-  test("3. renders cat pet of the day correctly with details", () => {
+
+  test("3. renders cat pet of the day correctly using PetCard", async () => { // Mark as async if using findBy* or waitFor
     // Setup: Mock the hook to return a specific cat pet
     (usePetOfTheDay as jest.Mock).mockReturnValue(validCatMock);
     // Setup: Mock the health calculation to return a value
-    (calculatePetHealth as jest.Mock).mockReturnValue("healthy"); // Or any status
+    const mockHealthStatus = "healthy";
+    (calculatePetHealth as jest.Mock).mockReturnValue(mockHealthStatus);
 
     // Action: Render the component
     renderWithRouter(<PetOfDay allPets={[validCatMock]} />);
 
     // --- Assertions ---
-    // Check for the title
+    // Check for the PetOfDay title
     expect(screen.getByText("Pet of the Day")).toBeInTheDocument();
-    // Check for the pet's name
-    expect(screen.getByText(validCatMock.name)).toBeInTheDocument();
-     // Check for the pet's kind (using partial match because it's inside a Badge)
-    expect(screen.getByText(validCatMock.kind, { exact: false })).toBeInTheDocument();
-    // Check for weight, height, length (using partial match due to units/labels)
-    // Note: We use the mocked translation for labels like "Weight" here implicitly
+
+    // --- Assertions targeting content rendered by PetCard ---
+    // Check for the pet's name (likely within an h5)
+    expect(screen.getByRole('heading', { name: validCatMock.name })).toBeInTheDocument();
+    // Check for the pet's kind (using the mocked translation 'Cat')
+    expect(screen.getByText("Cat")).toBeInTheDocument(); // Check badge text
+    // Check for weight, height, length (using getByText with exact: false or regex if needed)
     expect(screen.getByText(`${validCatMock.weight} g`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText(`${validCatMock.height} cm`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText(`${validCatMock.length} cm`, { exact: false })).toBeInTheDocument();
 
-    // Check the image presence and attributes
+    // Check the image rendered by the MOCKED BlurredImageBackgroundCard
+    // The mock renders a simple <img> with alt={pet.name}
     const image = screen.getByAltText(validCatMock.name);
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute("src", validCatMock.photo_url);
 
-    // Check that the component links to the pet's detail page
-    const link = screen.getByRole("link");
+    // Check that the PetCard component links to the pet's detail page
+    const link = screen.getByRole("link"); // PetCard wraps everything in a Link
     expect(link).toHaveAttribute("href", `/pet/${validCatMock.id}`);
 
-    // Check if calculatePetHealth was called with the correct pet
+    // Check if calculatePetHealth was called by PetCard
     expect(calculatePetHealth).toHaveBeenCalledWith(validCatMock);
+
+    // Check for the mocked HealthBadge content
+    expect(screen.getByTestId("health-badge")).toHaveTextContent(`Health: ${mockHealthStatus}`);
+
+    // Ensure loading spinner and error message are not present
+    expect(screen.queryByLabelText("Loading pet of the day")).not.toBeInTheDocument();
+    expect(screen.queryByText("We have no pet of the day, try again in a few minutes!!")).not.toBeInTheDocument();
   });
 
-  test("4. renders dog pet of the day correctly with details", () => {
-    // Setup: Mock the hook to return a specific dog pet
+  // Test 4 (for dog) would be very similar to Test 3, just using validDogMock
+  test("4. renders dog pet of the day correctly using PetCard", () => {
+     // Setup
     (usePetOfTheDay as jest.Mock).mockReturnValue(validDogMock);
-    // Setup: Mock the health calculation
-    (calculatePetHealth as jest.Mock).mockReturnValue("unhealthy"); // Example status
+    const mockHealthStatus = "unhealthy";
+    (calculatePetHealth as jest.Mock).mockReturnValue(mockHealthStatus);
 
-    // Action: Render the component
+    // Action
     renderWithRouter(<PetOfDay allPets={[validDogMock]} />);
 
-    // --- Assertions ---
-    // Check for the title
+     // Assertions (similar to test 3, checking dog details)
     expect(screen.getByText("Pet of the Day")).toBeInTheDocument();
-    // Check for the pet's name
-    expect(screen.getByText(validDogMock.name)).toBeInTheDocument();
-    // Check for kind, weight, height, length
-    expect(screen.getByText(validDogMock.kind, { exact: false })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: validDogMock.name })).toBeInTheDocument();
+    expect(screen.getByText("Dog")).toBeInTheDocument(); // Mocked translation
     expect(screen.getByText(`${validDogMock.weight} g`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText(`${validDogMock.height} cm`, { exact: false })).toBeInTheDocument();
     expect(screen.getByText(`${validDogMock.length} cm`, { exact: false })).toBeInTheDocument();
 
-    // Check the image
     const image = screen.getByAltText(validDogMock.name);
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute("src", validDogMock.photo_url);
 
-    // Check the link
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", `/pet/${validDogMock.id}`);
 
-     // Check if calculatePetHealth was called
     expect(calculatePetHealth).toHaveBeenCalledWith(validDogMock);
+    expect(screen.getByTestId("health-badge")).toHaveTextContent(`Health: ${mockHealthStatus}`);
+
+    expect(screen.queryByLabelText("Loading pet of the day")).not.toBeInTheDocument();
+    expect(screen.queryByText("We have no pet of the day, try again in a few minutes!!")).not.toBeInTheDocument();
   });
 
 });

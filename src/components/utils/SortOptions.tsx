@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { SortOption, SortDirection, SortKey } from "../types";
 import { AngleDown, AngleUp } from "flowbite-react-icons/outline";
 import { useTranslation } from "react-i18next";
+import { SortOption, SortDirection, SortKey } from "../../types";
 
 interface SortOptionsProps {
   sortOption: SortOption;

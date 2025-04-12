@@ -43,5 +43,11 @@
   },
   "order":{
     "orderBy": "Ordenar por:"
+  },
+  "not_found": {
+    "title": "¡Ups! Página no encontrada",
+    "code": "404",
+    "description": "No pudimos encontrar la mascota que buscabas. ¿Quizás se está escondiendo bajo el sofá? =(",
+    "button_home": "Volver al Inicio"
   }
 }

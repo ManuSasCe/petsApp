@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import HealthBadge from '../components/HealthBadge';
+import HealthBadge from '../components/utils/HealthBadge';
 import type { HealthStatus } from '../types';
 
 describe('HealthBadge Component', () => {

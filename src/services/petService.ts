@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { Pet } from "../types";
 
 const API_BASE_URL = "https://my-json-server.typicode.com/Feverup/fever_pets_data";
@@ -36,6 +37,7 @@ export async function fetchPets(params?: FetchPetsParams): Promise<PetsResponse>
   const response = await fetch(url);
 
   if (!response.ok) {
+    toast.error("we have an error!", );
     throw new Error(`Failed to fetch pets: ${response.status}`);
   }
 
@@ -53,6 +55,7 @@ export async function fetchPetById(id: number | string): Promise<Pet> {
   const response = await fetch(`${API_BASE_URL}/pets/${id}`);
   
   if (!response.ok) {
+    toast.error("we have an error!", );
     throw new Error(`Failed to fetch pet with id ${id}: ${response.status}`);
   }
   
@@ -65,6 +68,7 @@ export async function fetchAllPets(): Promise<Pet[]> {
   const response = await fetch(url);
   
   if (!response.ok) {
+    toast.error("we have an error!", );
     throw new Error(`Failed to fetch all pets: ${response.status}`);
   }
   

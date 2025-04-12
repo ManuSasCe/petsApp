@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom'; 
-import PaginationControls from '../components/PaginationControls';
+import PaginationControls from '../components/utils/PaginationControls';
 
 // We need to mock the useTranslation hook so it doesn't fail
 jest.mock('react-i18next', () => ({
