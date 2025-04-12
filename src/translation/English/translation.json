@@ -17,8 +17,8 @@
   },
   "buttons": {
     "back": "Back",
-    "show_featured": "Show Pet of the Day",
-    "hide_featured": "Hide Pet of the Day",
+    "show_pet_of_day": "Show Pet of the Day",
+    "hide_pet_of_day": "Hide Pet of the Day",
     "reset_filters": "Reset Filters"
   },
   "titles": {

@@ -35,7 +35,7 @@ export default function Layout({ children }: LayoutProps) {
             Fever Pets®
           </span>
         </Navbar.Brand>
-        <NavbarCollapse>
+        <div className="flex md:order-2 gap-2">
           <DarkThemeToggle />
           <div className="flex justify-between">
             <Select value={i18n.language} onChange={onclickLaguageChange}>
@@ -43,7 +43,7 @@ export default function Layout({ children }: LayoutProps) {
               <option value="es">Es</option>
             </Select>
           </div>
-        </NavbarCollapse>
+        </div>
       </Navbar>
 
       <main className="container mx-auto flex-1 px-2 lg:py-4">

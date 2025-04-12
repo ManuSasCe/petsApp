@@ -18,8 +18,8 @@
   },
   "buttons": {
     "back": "Volver",
-    "show_featured": "Mostrar Mascota del Día",
-    "hide_featured": "Ocultar Mascota del Día",
+    "show_pet_of_day": "Mostrar Mascota del Día",
+    "hide_pet_of_day": "Ocultar Mascota del Día",
     "reset_filters": "Reiniciar Filtros"
   },
   "titles": {

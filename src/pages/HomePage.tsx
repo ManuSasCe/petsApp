@@ -6,10 +6,11 @@ import PetOfDay from "../components/PetOfDay";
 import { getAllPets } from "../hooks/getAllPets";
 import Layout from "../components/Layout";
 import { useFilterActions, useFilterStore } from "../stores/filterStore";
-import { Spinner } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { useTranslation } from "react-i18next";
 import SortOptions from "../components/utils/SortOptions";
 import { getPaginatedPets } from "../hooks/getPaginatedPets";
+import { Star } from "flowbite-react-icons/outline";
 
 export default function HomePage() {
   // Component state management
@@ -61,16 +62,17 @@ export default function HomePage() {
           </h1>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <button
-              className={`rounded-lg px-4 py-2 ${
-                showPetOfDay ? "bg-blue-600 text-white" : "bg-gray-200"
+            <Button
+              pill
+              color={`${
+                showPetOfDay ? "green" : "blue"
               }`}
               onClick={() => setShowPetOfDay(!showPetOfDay)}
-            >
+            ><Star className="mr-2 h-5 w-5" />
               {showPetOfDay
-                ? t("buttons.hide_featured")
-                : t("buttons.show_featured")}
-            </button>
+                ? t("buttons.hide_pet_of_day")
+                : t("buttons.show_pet_of_day")}
+            </Button>
 
             <SortOptions
               sortOption={sortOption}
