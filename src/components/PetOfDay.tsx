@@ -26,7 +26,7 @@ export default function PetOfDay({ allPets }: { allPets: Pet[] }) {
   }
 
   return (
-    <div className="text-center">
+    <div className="flex flex-col justify-center items-center">
       <div className="mb-4 flex items-center justify-center">
         <CalendarEdit className="mr-2 size-5" />
         <h5 className="text-lg font-medium">{t("pet_day.title")}</h5>

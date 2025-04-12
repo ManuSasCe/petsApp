@@ -120,9 +120,7 @@ export default function HomePage() {
 
         {/* Featured pet section */}
         {showPetOfDay && (
-          <div className="mb-8">
             <PetOfDay allPets={allPets} />
-          </div>
         )}
 
         {/* Main content section */}

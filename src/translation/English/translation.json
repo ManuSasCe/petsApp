@@ -48,5 +48,11 @@
     "code": "404",
     "description": "We couldn't find the pet you were looking for. Maybe it's hiding under the couch? =(",
     "button_home": "Return to Home"
+  },
+  "health_status": {
+    "unhealthy": "Unhealthy",
+    "healthy": "Healthy",
+    "very_healthy": "Very Healthy",
+    "unknown": "Unknown"
   }
 }

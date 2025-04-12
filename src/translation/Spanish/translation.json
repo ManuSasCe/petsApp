@@ -49,5 +49,11 @@
     "code": "404",
     "description": "No pudimos encontrar la mascota que buscabas. ¿Quizás se está escondiendo bajo el sofá? =(",
     "button_home": "Volver al Inicio"
+  },
+  "health_status": {
+    "unhealthy": "No saludable",
+    "healthy": "Saludable",
+    "very_healthy": "Muy saludable",
+    "unknown": "Desconocido"
   }
 }
